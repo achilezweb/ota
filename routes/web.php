@@ -25,3 +25,5 @@ Route::resource('boards', BoardController::class)->middleware('auth');
 // Routes for approving and marking as spam
 Route::get('/boards/{job}/approve', [BoardController::class, 'approve'])->name('boards.approve');
 Route::get('/boards/{job}/spam', [BoardController::class, 'spam'])->name('boards.spam');
+
+Route::get('/job-list', [BoardController::class, 'list'])->name('boards.list');

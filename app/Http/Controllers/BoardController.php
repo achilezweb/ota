@@ -6,6 +6,9 @@ use App\Models\Board;
 use Illuminate\Http\Request;
 use App\Mail\NewJobNotification;
 use Illuminate\Support\Facades\Mail;
+use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Http;
+use SimpleXMLElement;
 
 class BoardController extends Controller
 {
@@ -122,6 +125,54 @@ class BoardController extends Controller
         $board->update(['approved' => false]);
 
         return redirect()->route('boards.index');
+    }
+
+    /**
+     * Display a job listing from external api.
+     */
+    public function list()
+    {
+
+        // Initialize Guzzle client
+        $client = new Client();
+
+        try {
+            // Send GET request to fetch XML data
+            $response = $client->get('https://mrge-group-gmbh.jobs.personio.de/xml');
+
+            // Get XML data from the response body
+            $xmlData = $response->getBody()->getContents();
+
+            // Parse XML data
+            $xml = new SimpleXMLElement($xmlData);
+
+            // Initialize arrays to store titles and descriptions
+            $jobs = [];
+
+            // Loop through job positions
+            foreach ($xml->position as $position) {
+                $title = (string) $position->name;
+                $description = (string) $position->jobDescriptions->jobDescription[0]->value;
+
+                // Add title and description to jobs array
+                $jobs[] = [
+                    'title' => $title,
+                    'description' => $description,
+                ];
+            }
+
+            // Extract title and description
+            $title = $jobs[0]['title'];
+            $description = $jobs[0]['description'];
+
+            // Return the title and description to the view
+            return view('boards.list', compact('title', 'description'));
+
+        } catch (\Exception $e) {
+            // Handle exception (e.g., connection error)
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+
     }
 
 }
