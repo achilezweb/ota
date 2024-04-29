@@ -90,8 +90,6 @@ php artisan serve
 
 ### Usage
 ```bash
-Use the web interface to create jobs.
-Use the API endpoints (/api/jobs) to display all jobs.
-GET /api/jobs
-POST /api/jobs
+User Story 1: access the /boards endpoint
+User Story 2: access the /job-list endpoint
 ```
