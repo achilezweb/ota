@@ -48,12 +48,14 @@ cp .env.example .env
 
 ### Open the .env file and configure the following environment variables:
 
+```bash
 DB_CONNECTION: Set this to pgsql for PostgreSQL.
 DB_HOST: Set the host of your PostgreSQL database.
 DB_PORT: Set the port of your PostgreSQL database.
 DB_DATABASE: Set the name of your PostgreSQL database.
 DB_USERNAME: Set the username for accessing your PostgreSQL database.
 DB_PASSWORD: Set the password for accessing your PostgreSQL database.
+```
 
 ### Generate Application Key
 Generate a new application key:
@@ -67,6 +69,7 @@ Run the database migrations to create the necessary tables:
 
 ```bash
 php artisan migrate:fresh 
+php artisan storage:link
 ```
 
 ### Run Migrations
@@ -86,7 +89,9 @@ php artisan serve
 ### The application will be available at http://localhost:8000.
 
 ### Usage
+```bash
 Use the web interface to create jobs.
 Use the API endpoints (/api/jobs) to display all jobs.
 GET /api/jobs
 POST /api/jobs
+```
